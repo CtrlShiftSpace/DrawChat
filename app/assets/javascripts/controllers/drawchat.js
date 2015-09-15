@@ -7,11 +7,10 @@
       rectangle: 3,
       circle: 4
     };
-// (x, y, radius, startAngle, endAngle, anticlockwise)
-// ctx.arc(230, 90, 50, 0, Math.PI*2, false);      //draw a circle
+
     this.moves = [{brush: 'rectangle', thickness: 20, color: 'rgb(255, 0, 0)', originX: 50, originY: 50, coords: [{x: 50, y: 250}, {x: 250, y: 250}, {x: 250, y: 50}] },
                   {brush: 'line', thickness: 10, color: 'rgb(0, 255, 0)', originX: 100, originY: 60, coords: [{x: 100, y: 250}, {x: 250, y: 250}] },
-                  {brush: 'circle', thickness: 2, color: '#fef400', originX: 150, originY: 150, coords: [{r: }]];
+                  {brush: 'circle', thickness: 2, color: 'rgb(0, 0, 255)', originX: 150, originY: 150, coords: [{r: 50}] } ];
 
     this.brush = this.BrushModes.paint;
     this.currentColor = $('#color').val();
@@ -20,25 +19,22 @@
       var canvas = document.getElementById("myCanvas");
       var ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       $.each(this.moves, function(index, move) {
         ctx.lineWidth = move.thickness;
         ctx.strokeStyle = move.color;
         ctx.fillStyle = move.color;
         ctx.beginPath();
-        ctx.moveTo(move.originX, move.originY);
-
-        if (move.brush !== 'circle') {
+        if (move.brush == 'circle') {
+          ctx.arc(move.originX, move.originY, move.coords[0].r, 0, Math.PI*2, false);
+        } else {
+          ctx.moveTo(move.originX, move.originY);
             $.each(move.coords, function(index, line) {
               ctx.lineTo(line.x, line.y);
             })
             if (move.brush == 'rectangle' || move.brush == 'line') {
               ctx.closePath();
             }
-        } else {
-          $.each(move.coords, function(index, key) {
-            ctx.arc()
-          })
         }
 
         ctx.stroke();
@@ -69,6 +65,9 @@
           case this.BrushModes.rectangle:
             this.drawWithRectangle(lastMove, coords);
             break;
+          case this.BrushModes.circle:
+            this.drawWithCircle(lastMove, coords);
+            break;
         }
         this.drawChart();
       }
@@ -86,6 +85,14 @@
       move.coords = [{x: move.originX, y: coords.y},
                     {x: coords.x, y: coords.y},
                     {x: coords.x, y: move.originY}]
+    }
+
+    this.drawWithCircle = function(move, coords) {
+      move.brush = 'circle'
+      move.originX = move.originX
+      move.originY = move.originY
+      var radius = Math.sqrt( Math.pow( (coords.x - move.originX), 2) + Math.pow( coords.y - move.originY, 2) )
+      move.coords = [{r: radius}]
     }
 
     this.endPath = function(e) {
