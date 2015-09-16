@@ -1,8 +1,6 @@
 (function() {
   var drawchatServices = angular.module('drawchatServices', ['ngResource']);
-  drawchatServices.factory('DrawChat', ['$resource', function($resource) {
-    return $resource('/drawings/:id', {}, {
-      update: {method:'PUT'}
-    });
+  drawchatServices.factory('Drawing', ['$resource', function($resource) {
+    return $resource('http://localhost:3000/api/drawings/:id');
   }]);
 })();

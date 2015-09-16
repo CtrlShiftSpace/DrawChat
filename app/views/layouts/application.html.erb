@@ -10,14 +10,27 @@
 <body>
   <h1><a ng-href="/#/drawings">DrawChat</a></h1>
 
+  <div ng-controller='drawchatController as dcCtrl'>
+    <input type="text" ng-model='dcCtrl.brush' />
+
+    <input type="color" id='color' ng-model='dcCtrl.currentColor'>
+    <p ng-click='dcCtrl.undoMove()'>Undo Move</p>
+
+    <canvas id="myCanvas" width="1000" height="500" ng-mousedown="dcCtrl.startPath($event)" ng-mousemove="dcCtrl.drawPath($event)" ng-mouseup="dcCtrl.endPath($event)" ng-mouseleave="dcCtrl.endPath($event)"></canvas>
+
+    <div>{{dcCtrl.test}}</div>
+
+    <div ng-repeat="move in dcCtrl.moves">
+      <p>{{$index}}{{move}}</p>
+    </div>
+
+  </div>
+
+
+
   <div ng-view>
     <%= yield %>
   </div>
-
-  <!-- Javascripts
-  ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <%= javascript_include_tag "application" %>
 
 </body>
 </html>

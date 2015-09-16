@@ -1,6 +1,11 @@
 source 'https://rubygems.org'
 
 
+
+# underscore.js asset-pipeline provider/wrapper
+gem 'underscore-rails'
+#
+gem 'bower-rails'
 # Use your angular templates with rails' asset pipeline
 gem 'angular-rails-templates'
 # Rails integration for AngularJS style CSRF protection

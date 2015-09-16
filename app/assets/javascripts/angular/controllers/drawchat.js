@@ -1,6 +1,18 @@
-// (function() {
-  angular.module("drawchatControllers", [])
-  .controller("drawchatController", function(){
+(function() {
+  var drawchatControllers = angular.module('drawchatControllers', ['ngRoute'])
+  // angular.module("drawchatControllers", ['ngRoute'])
+
+  //index controller
+
+  // drawchatControllers.controller('drawchatController', ['drawchat', function(drawchat) {
+  //   this.drawings = drawchat.query();
+  // }]);
+  // .constant('dataUrl', 'http://localhost:3000/api/drawings')
+
+  drawchatControllers.controller("drawchatController", [ 'Drawing', function(Drawing){
+
+    this.test = Drawing.query();
+
     this.BrushModes = {
       paint: 1,
       line: 2,
@@ -107,6 +119,6 @@
 
       return {x: e.clientX - canvasOffset.left, y: e.clientY - canvasOffset.top}
     }
-  })
+  }])
 
-// })();
+})();

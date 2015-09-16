@@ -12,7 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
-// romoved turbolinks
+// removed turbolinks
+//= require underscore
 //= require angular
+//= require angular-route
 //= require angular-resource
 //= require_tree .
