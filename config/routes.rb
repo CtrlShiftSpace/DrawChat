@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  root to: 'drawings#index'
-  resources :drawings do
+  root to: 'application#index'
 
+  namespace :api do#, defaults: {format: :json} do
+    resources :drawings do
+    end
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

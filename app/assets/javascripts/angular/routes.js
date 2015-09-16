@@ -1,4 +1,4 @@
-(function() {
+// (function() {
   var router = angular.module('drawchatRouter', []);
   router.config([
     '$routeProvider',
@@ -15,4 +15,4 @@
        redirectTo: "/drawings"
      })
   ])
-})()
+// })()
