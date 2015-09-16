@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="drawchat">
 <head>
   <title>DrawChat</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -7,8 +7,10 @@
   <%= csrf_meta_tag %>
 </head>
 <body>
-
-<%= yield %>
+  <h1><a ng-href="/#/drawings">DrawChat</a></h1>
+  <div ng-view>
+    <%= yield %>
+  </div>
 
 </body>
 </html>

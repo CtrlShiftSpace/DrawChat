@@ -5,4 +5,5 @@ class Drawing
   field :name, type: String
 
   embeds_many :moves, cascade_callbacks: true
+
 end

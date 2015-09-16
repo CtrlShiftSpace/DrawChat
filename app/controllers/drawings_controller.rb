@@ -1,22 +1,23 @@
 class DrawingsController < ApplicationController
   protect_from_forgery
+  skip_before_filter :verify_authenticity_token
 
   def index
     @drawings = Drawing.all
 
-    render json: @drawings.to_json, status: :ok
+    render json: @drawings.as_json, status: :ok
   end
 
   def show
     @drawing = Drawing.find(params[:id])
-    render json: @drawing.to_json, status: :ok
+    render json: @drawing.as_json, status: :ok
   end
 
   def create
-    @drawing = Drawing.new(params[:drawing])
+    @drawing = Drawing.new(drawing_params)
 
     if @drawing.save
-      render json: @drawing.to_json, status: :created
+      render json: @drawing.as_json, status: :created
     else
       render json: @drawing.errors, status: :unprocessable_entity
     end
@@ -25,7 +26,7 @@ class DrawingsController < ApplicationController
   def update
     @drawing = Drawing.find(params[:id])
     if @drawing.update(drawing_params)
-      render json: @drawing.to_json, status: :ok
+      render json: @drawing.as_json, status: :ok
     else
       render json: @drawing.errors, status: :unprocessable_entity
     end

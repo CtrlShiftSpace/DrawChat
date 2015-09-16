@@ -1,7 +1,11 @@
 source 'https://rubygems.org'
 
 
-# AngularJS Rails
+# Use your angular templates with rails' asset pipeline
+gem 'angular-rails-templates'
+# Rails integration for AngularJS style CSRF protection
+gem 'angular_rails_csrf'
+# Injects Angular.js into your asset pipeline as well as other Angular modules.
 gem 'angularjs-rails'
 # Mongoid
 gem 'mongoid', '~> 5.0.0'
