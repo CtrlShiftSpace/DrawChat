@@ -1,0 +1,49 @@
+class DrawingsController < ApplicationController
+  protect_from_forgery
+
+  def index
+    @drawings = Drawing.all
+
+    render json: @drawings.to_json, status: :ok
+  end
+
+  def show
+    @drawing = Drawing.find(params[:id])
+    render json: @drawing.to_json, status: :ok
+  end
+
+  def create
+    @drawing = Drawing.new(params[:drawing])
+
+    if @drawing.save
+      render json: @drawing.to_json, status: :created
+    else
+      render json: @drawing.errors, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    @drawing = Drawing.find(params[:id])
+    if @drawing.update(drawing_params)
+      render json: @drawing.to_json, status: :ok
+    else
+      render json: @drawing.errors, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @drawing = Drawing.find(params[:id])
+    @drawing.destroy
+    render json: {message: "success"}, status: :ok
+  end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def drawing_params
+#{ name: "Test Test Test" , moves: [ { brush: 2, thickness: 2, color: 'rgb(255, 255, 0)', origin: { x: 100, y: 3 }, coordinates: [ { x: 60, y: 75 }, { x: 140, y: 75 } ] }, { brush: 3, thickness: 3, color: 'rgb(0, 255, 0)', origin: { x: 100, y: 50 }, coordinates: [ {r: 40} ] } ] }
+            #.permit(:name, {:emails => []}, :friends => [ :name, { :family => [ :name ], :hobbies => [] }])
+      params.permit( :name, :moves => [ :brush, :thickness, :color, :coordinates => [ :x, :y, :r ] ] )
+    end
+
+
+end
