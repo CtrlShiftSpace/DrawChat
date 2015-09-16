@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
 
-
+# AngularJS Rails
+gem 'angularjs-rails'
 # Mongoid
 gem 'mongoid', '~> 5.0.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
