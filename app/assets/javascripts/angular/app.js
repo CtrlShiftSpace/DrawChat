@@ -2,9 +2,9 @@
 
 (function() {
   var app = angular.module('drawchat', [
-    // 'ngRoute',
+    'ngRoute',
     'ngResource',
-    // 'drawchatRouter',
+    'drawchatRouter',
     'drawchatServices',
     'drawchatControllers'
   ]);

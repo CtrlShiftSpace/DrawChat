@@ -4,29 +4,12 @@
   <title>DrawChat</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
+  <link href='https://fonts.googleapis.com/css?family=Montez|Open+Sans+Condensed:300,300italic' rel='stylesheet' type='text/css'>
 
   <%= csrf_meta_tag %>
 </head>
 <body>
-  <h1><a ng-href="/#/drawings">DrawChat</a></h1>
-
-  <div ng-controller='drawchatController as dcCtrl'>
-    <input type="text" ng-model='dcCtrl.brush' />
-
-    <input type="color" id='color' ng-model='dcCtrl.currentColor'>
-    <p ng-click='dcCtrl.undoMove()'>Undo Move</p>
-
-    <canvas id="myCanvas" width="1000" height="500" ng-mousedown="dcCtrl.startPath($event)" ng-mousemove="dcCtrl.drawPath($event)" ng-mouseup="dcCtrl.endPath($event)" ng-mouseleave="dcCtrl.endPath($event)"></canvas>
-
-    <div>{{dcCtrl.test}}</div>
-
-    <div ng-repeat="move in dcCtrl.moves">
-      <p>{{$index}}{{move}}</p>
-    </div>
-
-  </div>
-
-
+  <h1 id='header' ><a ng-href="/#/drawings">DrawChat</a></h1>
 
   <div ng-view>
     <%= yield %>

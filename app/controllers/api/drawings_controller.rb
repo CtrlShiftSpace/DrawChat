@@ -5,7 +5,7 @@ class Api::DrawingsController < ApplicationController
   def index
     @drawings = Drawing.all
 
-    render json: @drawings.as_json, status: :ok
+    render json: @drawings.as_json(only: [:id, :name]), status: :ok
   end
 
   def show
@@ -43,7 +43,7 @@ class Api::DrawingsController < ApplicationController
     def drawing_params
 #{ name: "Test Test Test" , moves: [ { brush: 2, thickness: 2, color: 'rgb(255, 255, 0)', origin: { x: 100, y: 3 }, coordinates: [ { x: 60, y: 75 }, { x: 140, y: 75 } ] }, { brush: 3, thickness: 3, color: 'rgb(0, 255, 0)', origin: { x: 100, y: 50 }, coordinates: [ {r: 40} ] } ] }
             #.permit(:name, {:emails => []}, :friends => [ :name, { :family => [ :name ], :hobbies => [] }])
-      params.permit( :name, :moves => [ :brush, :thickness, :color, :coordinates => [ :x, :y, :r ] ] )
+      params.permit( :name, :moves => [ :brush, :thickness, :color, origin: [:x, :y], coordinates: [ :x, :y, :r ] ] )
     end
 
 

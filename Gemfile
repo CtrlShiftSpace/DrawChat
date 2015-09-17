@@ -1,7 +1,9 @@
 source 'https://rubygems.org'
 
-
-
+# Twitter Bootstrap for Rails 3.x - 4 Asset Pipeline
+gem "twitter-bootstrap-rails"
+gem "therubyracer"
+gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 # underscore.js asset-pipeline provider/wrapper
 gem 'underscore-rails'
 #

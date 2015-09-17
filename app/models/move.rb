@@ -2,11 +2,9 @@ class Move
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :brush, type: Integer
-  field :thickness, type: Integer
-  field :color, type: String
-  # field :originX, type: Integer
-  # field :originY, type: Integer
+  field :brush, type: Integer, default: 1
+  field :thickness, type: Integer, default: 10
+  field :color, type: String, default: 'rgb(254,39,18)'
 
   embeds_one :origin, class_name: 'Coordinate', cascade_callbacks: true
 

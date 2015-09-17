@@ -2,16 +2,26 @@
   var drawchatControllers = angular.module('drawchatControllers', ['ngRoute'])
   // angular.module("drawchatControllers", ['ngRoute'])
 
-  //index controller
+  //index controller, new controller
+  drawchatControllers.controller("drawingsController", [ 'Drawing', function(Drawing) {
+    this.drawings = Drawing.query();
 
-  // drawchatControllers.controller('drawchatController', ['drawchat', function(drawchat) {
-  //   this.drawings = drawchat.query();
-  // }]);
-  // .constant('dataUrl', 'http://localhost:3000/api/drawings')
+    this.create = function(event) {
+      event.preventDefault();
+      Drawing.save(this.drawing, function(drawing) {
+        $location.path("/drawings/" + drawing.id);
+      });
+    }
+  }]);
 
-  drawchatControllers.controller("drawchatController", [ 'Drawing', function(Drawing){
+  //show controller
+  drawchatControllers.controller("drawingController", [ '$routeParams', 'Drawing', function($routeParams, Drawing){
+    var self = this;
+    $("#colorPicker").tinycolorpicker();
+    this.drawing = Drawing.get({id: $routeParams.id}, function(drawing) {
+      self.drawChart();
+    });
 
-    this.test = Drawing.query();
 
     this.BrushModes = {
       paint: 1,
@@ -19,46 +29,48 @@
       rectangle: 3,
       circle: 4
     };
-
-    this.moves = [{brush: 'rectangle', thickness: 20, color: 'rgb(255, 0, 0)', originX: 50, originY: 50, coords: [{x: 50, y: 250}, {x: 250, y: 250}, {x: 250, y: 50}] },
-                  {brush: 'line', thickness: 10, color: 'rgb(0, 255, 0)', originX: 100, originY: 60, coords: [{x: 100, y: 250}, {x: 250, y: 250}] },
-                  {brush: 'circle', thickness: 2, color: 'rgb(0, 0, 255)', originX: 150, originY: 150, coords: [{r: 50}] } ];
+//  { name: "Test Test Test" , moves: [ { brush: 2, thickness: 2, color: 'rgb(255, 255, 0)', origin: { x: 100, y: 3 }, coordinates: [ { x: 60, y: 75 }, { x: 140, y: 75 } ] }, { brush: 3, thickness: 3, color: 'rgb(0, 255, 0)', origin: { x: 100, y: 50 }, coordinates: [ {r: 40} ] } ] }
 
     this.brush = this.BrushModes.paint;
-    this.currentColor = $('#color').val();
+    this.thickness = $('#myRange').val();
 
     this.drawChart = function() {
+      var self = this;
+
       var canvas = document.getElementById("myCanvas");
       var ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      $.each(this.moves, function(index, move) {
-        ctx.lineWidth = move.thickness;
-        ctx.strokeStyle = move.color;
-        ctx.fillStyle = move.color;
-        ctx.beginPath();
-        if (move.brush == 'circle') {
-          ctx.arc(move.originX, move.originY, move.coords[0].r, 0, Math.PI*2, false);
-        } else {
-          ctx.moveTo(move.originX, move.originY);
-            $.each(move.coords, function(index, line) {
-              ctx.lineTo(line.x, line.y);
-            })
-            if (move.brush == 'rectangle' || move.brush == 'line') {
-              ctx.closePath();
-            }
-        }
+      $.each(this.drawing.moves, function(index, move) {
+        if (move.coordinates !== undefined && move.coordinates.length > 0) {
+          ctx.lineWidth = move.thickness;
+          ctx.strokeStyle = move.color;
+          ctx.fillStyle = move.color;
+          ctx.beginPath();
+          if (move.brush == self.BrushModes.circle) {
+            ctx.arc(move.origin.x, move.origin.y, move.coordinates[0].r, 0, Math.PI*2, false);
+          } else {
+            ctx.moveTo(move.origin.x, move.origin.y);
+              $.each(move.coordinates, function(index, line) {
+                ctx.lineTo(line.x, line.y);
+              })
+              if (move.brush == self.BrushModes.rectangle || move.brush == self.BrushModes.line) {
+                ctx.closePath();
+              }
+          }
 
-        ctx.stroke();
-        ctx.save();
+          ctx.stroke();
+          ctx.save();
+        }
       })
     }
 
     this.startPath = function(e) {
       var coords = this.translateCoords(e)
 
-      var myNewLine = {thickness: 5, color: this.currentColor, originX: coords.x, originY: coords.y, coords: []};
-      this.moves.push(myNewLine);
+      var myNewLine = {thickness: this.thickness, brush: this.brush, color: $('.colorInput').val(), origin: {x: coords.x, y: coords.y}, coordinates: []};
+      this.drawing.moves = this.drawing.moves || [];
+      this.drawing.moves.push(myNewLine);
       this.isPenDown = true;
     }
 
@@ -66,7 +78,7 @@
 
       if(this.isPenDown) {
         var coords = this.translateCoords(e);
-        var lastMove = this.moves[this.moves.length-1];
+        var lastMove = this.drawing.moves[this.drawing.moves.length-1];
         switch (parseInt(this.brush)) {
           case this.BrushModes.paint:
             this.drawWithBrush(lastMove, coords);
@@ -86,39 +98,46 @@
     }
 
     this.drawWithBrush = function (move, coords) {
-      move.coords.push({x: coords.x, y: coords.y});
+      move.coordinates.push({x: coords.x, y: coords.y});
     }
 
     this.drawWithLine = function (move, coords) {
-      move.coords = [{x: coords.x, y: coords.y}];
+      move.coordinates = [{x: coords.x, y: coords.y}];
     }
     this.drawWithRectangle = function(move, coords) {
-      move.brush = 'rectangle'
-      move.coords = [{x: move.originX, y: coords.y},
+      move.coordinates = [{x: move.origin.x, y: coords.y},
                     {x: coords.x, y: coords.y},
-                    {x: coords.x, y: move.originY}]
+                    {x: coords.x, y: move.origin.y}]
     }
 
     this.drawWithCircle = function(move, coords) {
-      move.brush = 'circle'
-      move.originX = move.originX
-      move.originY = move.originY
-      var radius = Math.sqrt( Math.pow( (coords.x - move.originX), 2) + Math.pow( coords.y - move.originY, 2) )
-      move.coords = [{r: radius}]
+      move.origin.x = move.origin.x
+      move.origin.y = move.origin.y
+      var radius = Math.sqrt( Math.pow( (coords.x - move.origin.x), 2) + Math.pow( coords.y - move.origin.y, 2) )
+      move.coordinates = [{r: radius}]
     }
 
     this.endPath = function(e) {
       var coords = this.translateCoords(e);
       this.isPenDown = false;
       this.drawChart();
+      this.drawing.$update({id: this.drawing.id})
     }
 
     this.translateCoords = function(e) {
+      var $body = $('body');
       var $canvas = $('#myCanvas');
       var canvasOffset = $canvas.offset();
 
-      return {x: e.clientX - canvasOffset.left, y: e.clientY - canvasOffset.top}
+      return { x: e.clientX - canvasOffset.left + $body.scrollLeft(), y: e.clientY - canvasOffset.top + $body.scrollTop() }
     }
-  }])
+
+    this.clearCanvas = function() {
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }]);
+
 
 })();
