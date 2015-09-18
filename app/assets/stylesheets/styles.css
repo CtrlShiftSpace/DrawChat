@@ -24,6 +24,9 @@ body {
 input {
   display: block;
 }
+p.btn {
+  font-size: 2rem;
+}
 
 input#drawingName {
   width: 500px;
@@ -34,20 +37,35 @@ input#drawingName {
   font-family: 'Open Sans Condensed', sans-serif;
   text-align: center;
 }
+img {
+  width: 3rem;
+  border: 1px solid gray;
+  margin: 0.1rem;
+}
+img#canvasImg {
+  width: inherit;
+}
 
 div.options {
   width: 300px;
-  margin-top: 33px;
+  margin-top: 4rem;
   border: 1px gray solid;
 }
+
 div#brushMode {
   display: inline-block;
-  padding: 0.8rem 4rem;
+  padding: 1rem ;
   border: 1px gray solid;
   margin: 1rem auto;
   font-size: 1.5rem;
   text-align: center;
 }
+#brushMode p {
+  display: inline-block;
+  margin: 0;
+  cursor: pointer;
+}
+
 td {
   width: 50%;
   display: block;

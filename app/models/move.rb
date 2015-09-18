@@ -4,7 +4,7 @@ class Move
 
   field :brush, type: Integer, default: 1
   field :thickness, type: Integer, default: 10
-  field :color, type: String, default: 'rgb(254,39,18)'
+  field :color, type: String
 
   embeds_one :origin, class_name: 'Coordinate', cascade_callbacks: true
 

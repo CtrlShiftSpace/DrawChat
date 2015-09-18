@@ -1,0 +1,55 @@
+<!-- Show Drawing Page -->
+<div class='container' ng-controller='drawingController as drawingCtrl'>
+
+  <div class="row col-md-12" >
+    <input id='drawingName' type="text" ng-model='drawingCtrl.drawing.name' />
+  </div>
+
+  <div class="row" class='palette'>
+    <div class='col-md-4 options'>
+      <div id='brushMode' >
+        <p class='btn' ng-click='drawingCtrl.brush = drawingCtrl.BrushModes.brush'><%= image_tag("paint.png") %></p>
+        <p class='btn' ng-click='drawingCtrl.brush = drawingCtrl.BrushModes.line'><%= image_tag("line.png") %></p>
+        <p class='btn' ng-click='drawingCtrl.brush = drawingCtrl.BrushModes.rectangle'><%= image_tag("rectangle.png") %></p>
+        <p class='btn' ng-click='drawingCtrl.brush = drawingCtrl.BrushModes.circle'><%= image_tag("circle.png") %></p>
+      </div>
+      <div>
+        <table style="width:100%">
+          <tr>
+            <td>
+              <input type="range" id="myRange" min='1' max='20' ng-model='drawingCtrl.thickness'>
+              <p>Thickness: {{drawingCtrl.thickness}}</p>
+            </td>
+            <td>
+              <div id="colorPicker">
+                <a class="color"><div class="colorInner"></div></a>
+                <div class="track"></div>
+                <ul class="dropdown"><li></li></ul>
+                <input type="hidden" class="colorInput" ng-model='drawingCtrl.color'/>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      <div class='actions'>
+        <p class='btn' ng-click='drawingCtrl.undoMove()'>Undo Move</p>
+        <p class='btn' ng-click='drawingCtrl.clearCanvas(drawingCtrl.drawing.id)'>Clear Work</p>
+        <p class='btn' ng-click='drawingCtrl.redoMove()'>Redo Move</p>
+      </div>
+      <div>
+        <canvas id="myCanvas" width="600" height="500" ng-mousedown="drawingCtrl.startPath($event)" ng-mousemove="drawingCtrl.drawPath($event)" ng-mouseup="drawingCtrl.endPath($event)" ng-mouseleave="drawingCtrl.endPath($event)"></canvas>
+      </div>
+      <div>
+        <img ng-show='!drawingCtrl.canvasIsVisible' id="canvasImg" alt='canvas as png'/>
+      </div>
+      <div class="actions">
+        <p class='btn' ng-click='drawingCtrl.deleteDrawing(drawingCtrl.drawing.id)'>Delete Work</p>
+        <p class='btn' ng-show='drawingCtrl.canvasIsVisible' ng-click='drawingCtrl.saveAsImg()'>Save Work as PNG</p>
+        <p class='btn' ng-show='!drawingCtrl.canvasIsVisible' ng-click='drawingCtrl.showCanvas()'>Back to Edit Mode</p>
+      </div>
+    </div>
+  </div>
+</div>

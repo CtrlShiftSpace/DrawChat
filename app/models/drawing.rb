@@ -4,6 +4,6 @@ class Drawing
 
   field :name, type: String, default: 'Untitled Work'
 
-  embeds_many :moves, cascade_callbacks: true
+  embeds_many :moves, cascade_callbacks: true, order: :created_at.asc
 
 end

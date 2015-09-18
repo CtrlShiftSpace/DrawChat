@@ -25,6 +25,12 @@ class Api::DrawingsController < ApplicationController
 
   def update
     @drawing = Drawing.find(params[:id])
+    move_param_ids = drawing_params[:moves] ? drawing_params[:moves].map { |move| move[:id] } : []
+    deleted_moves = @drawing.moves.not_in(id: move_param_ids)
+    deleted_moves.each do |deleted_move|
+      deleted_move.delete
+    end
+
     if @drawing.update(drawing_params)
       render json: @drawing.as_json, status: :ok
     else

@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'pusher'
 # Twitter Bootstrap for Rails 3.x - 4 Asset Pipeline
 gem "twitter-bootstrap-rails"
 gem "therubyracer"
@@ -9,7 +10,7 @@ gem 'underscore-rails'
 #
 gem 'bower-rails'
 # Use your angular templates with rails' asset pipeline
-gem 'angular-rails-templates'
+# gem 'angular-rails-templates', '0.2.0'
 # Rails integration for AngularJS style CSRF protection
 gem 'angular_rails_csrf'
 # Injects Angular.js into your asset pipeline as well as other Angular modules.

@@ -1,21 +1,8 @@
-<h3>DrawChat index.html</h3>
+
 <div ng-controller='drawingsController as drawingsCtrl'>
-  <a href='#' ng-click="drawingsCtrl.create($event)">Create New</a>
+
+  <p class="btn" ><a href='#' ng-click="drawingsCtrl.create($event)">Create New</a></p>
   <div ng-repeat='drawing in drawingsCtrl.drawings'>
-      <p><a ng-href='#/drawings/{{drawing.id}}'>{{drawing.name}}</a></p>
+      <p class="btn" ><a ng-href='#/drawings/{{drawing.id}}'>{{drawing.name}}</a></p>
   </div>
-
-  <!-- <input type="text" ng-model='drawingsCtrl.brush' />
-
-  <input type="color" id='color' ng-model='drawingsCtrl.currentColor'>
-  <p ng-click='drawingsCtrl.undoMove()'>Undo Move</p>
-
-  <canvas id="myCanvas" width="1000" height="500" ng-mousedown="drawingsCtrl.startPath($event)" ng-mousemove="drawingsCtrl.drawPath($event)" ng-mouseup="drawingsCtrl.endPath($event)" ng-mouseleave="drawingsCtrl.endPath($event)"></canvas>
-
-  <div>{{drawingsCtrl.test}}</div>
-
-  <div ng-repeat="move in drawingsCtrl.moves">
-    <p>{{$index}}{{move}}</p>
-  </div> -->
-
 </div>
